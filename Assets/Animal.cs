@@ -13,11 +13,12 @@ public class Animal : MonoBehaviour
 
 
     private bool isGrounded;
-   
+    private bool hasHitWall;
 
     private bool isJumping;
 
     private Rigidbody rb;
+    Vector3 eulerAngleVelocity;
     public float jumpForce;
     public float speed = 1f;
     private Animator anim;
@@ -31,7 +32,9 @@ public class Animal : MonoBehaviour
         */
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        eulerAngleVelocity = new Vector3(0, 135, 0);
         isGrounded = true;
+        hasHitWall = false;
        
     }
 
@@ -42,14 +45,17 @@ public class Animal : MonoBehaviour
         if (isGrounded)
         {
             anim.SetBool("isJumping", true);
-            float h = 2f * .3f;
-            float v = 2f * .2f;
             
             rb.AddForce(new Vector3(0,3,0) * speed, ForceMode.Impulse);
             
             anim.SetBool("isJumping", false);
             isGrounded = false;
             Debug.Log(isGrounded + "value in update");
+        }
+        if (hasHitWall)
+        {
+            Quaternion deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRotation);
         }
                 
         
@@ -63,6 +69,12 @@ public class Animal : MonoBehaviour
         {
             isGrounded= true;
             Debug.Log(isGrounded + "value in Oncollisionenter");
+        }
+
+        if(collision.gameObject.tag == "wall")
+        {
+            hasHitWall = true;
+            Debug.Log(hasHitWall + "value hitwall in oncollision");
         }
     }
 }
