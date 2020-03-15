@@ -6,6 +6,9 @@ TagManager:
   tags:
   - plane
   - wall
+  - water
+  - closetowater
+  - astar
   layers:
   - Default
   - TransparentFX
@@ -16,8 +19,8 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
+  - Unwalkable
+  - CloseToWater
   - 
   - 
   - 
